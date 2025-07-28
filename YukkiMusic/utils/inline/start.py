@@ -63,6 +63,7 @@ def private_panel(_, BOT_USERNAME, OWNER: bool | int = None):
             buttons.append(
                 [InlineKeyboardButton(text=_["S_B_3"], url=f"{SUPPORT_GROUP}")]
             )
+
     buttons.append(
         [
             InlineKeyboardButton(
@@ -71,26 +72,20 @@ def private_panel(_, BOT_USERNAME, OWNER: bool | int = None):
             )
         ]
     )
-    if GITHUB_REPO and OWNER:
+
+    # OWNER and LG button in one row
+    if OWNER:
         buttons.append(
             [
                 InlineKeyboardButton(text=_["S_B_7"], user_id=OWNER),
-                InlineKeyboardButton(text=_["S_B_6"], url=f"{GITHUB_REPO}"),
+                InlineKeyboardButton(text=_["ST_B_6"], callback_data="LG"),
             ]
         )
     else:
-        if GITHUB_REPO:
-            buttons.append(
-                [
-                    InlineKeyboardButton(text=_["S_B_6"], url=f"{GITHUB_REPO}"),
-                ]
-            )
+        buttons.append(
+            [
+                InlineKeyboardButton(text=_["ST_B_6"], callback_data="LG"),
+            ]
+        )
 
-        if OWNER:
-            buttons.append(
-                [
-                    InlineKeyboardButton(text=_["S_B_7"], user_id=OWNER),
-                ]
-            )
-    buttons.append([InlineKeyboardButton(text=_["ST_B_6"], callback_data="LG")])
     return buttons
