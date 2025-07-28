@@ -135,7 +135,7 @@ async def markup_timer():
                         await app.send_message(
                             chat_id,
                              "⚠️ Assistant is muted and cannot unmute itself.\n"
-            "Leaving voice chat in 5 seconds if not unmuted."
+            "Leaving voice chat in 20 seconds if not unmuted."
                         )
 
             except Exception:
