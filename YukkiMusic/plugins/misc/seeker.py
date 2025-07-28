@@ -132,7 +132,7 @@ async def markup_timer():
                             "_": _,
                             "warned": False,
                         }
-                        await userbot.send_message(
+                        await app.send_message(
                             chat_id,
                              "⚠️ Assistant is muted and cannot unmute itself.\n"
             "Leaving voice chat in 5 seconds if not unmuted."
