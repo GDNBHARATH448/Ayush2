@@ -1,12 +1,3 @@
-#
-# Copyright (C) 2024-2025 by TheTeamVivek@Github, < https://github.com/TheTeamVivek >.
-#
-# This file is part of < https://github.com/TheTeamVivek/YukkiMusic > project,
-# and is released under the MIT License.
-# Please see < https://github.com/TheTeamVivek/YukkiMusic/blob/master/LICENSE >
-#
-# All rights reserved.
-#
 import asyncio
 import time
 from datetime import datetime, timedelta
@@ -54,7 +45,7 @@ async def leave_if_muted():
     while True:
         await asyncio.sleep(2)
         for chat_id, details in list(muted.items()):
-            if time.time() - details["timestamp"] >= 60:
+            if time.time() - details["timestamp"] >= 20:  # 5 seconds instead of 60
                 _ = details["_"]
                 try:
                     userbot = await get_assistant(chat_id)
@@ -74,8 +65,8 @@ async def leave_if_muted():
                     m = next((m for m in members if m.chat.id == userbot.id), None)
                     if m is None:
                         continue
-                    is_muted = bool(m.is_muted and not m.can_self_unmute)
 
+                    is_muted = bool(m.is_muted and not m.can_self_unmute)
                     if is_muted:
                         await Yukki.stop_stream(chat_id)
                         await set_loop(chat_id, 0)
@@ -139,7 +130,13 @@ async def markup_timer():
                         muted[chat_id] = {
                             "timestamp": time.time(),
                             "_": _,
+                            "warned": False,
                         }
+                        await userbot.send_message(
+                            chat_id,
+                            "⚠️ 𝗔𝘀𝘀𝗶𝘀𝘁𝗮𝗻𝘁 𝗮𝗰𝗰𝗼𝘂𝗻𝘁 𝗶𝘀 𝗺𝘂𝘁𝗲𝗱 𝗮𝗻𝗱 𝗰𝗮𝗻𝗻𝗼𝘁 𝘂𝗻𝗺𝘂𝘁𝗲 𝗶𝘁𝘀𝗲𝗹𝗳.\n"
+                            "𝗟𝗲𝗮𝘃𝗶𝗻𝗴 𝘃𝗼𝗶𝗰𝗲 𝗰𝗵𝗮𝘁 𝗶𝗻 𝟮𝟬 𝘀𝗲𝗰𝗼𝗻𝗱𝘀 𝗶𝗳 𝗻𝗼𝘁 𝘂𝗻𝗺𝘂𝘁𝗲𝗱."
+                        )
 
             except Exception:
                 pass
@@ -186,6 +183,7 @@ async def markup_timer():
                 continue
 
 
+# Launch all tasks
 asyncio.create_task(timer(), name="timer")
 asyncio.create_task(markup_timer(), name="markup_timer")
 asyncio.create_task(leave_if_muted(), name="leave_if_muted")
